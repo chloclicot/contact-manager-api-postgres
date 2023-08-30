@@ -29,27 +29,30 @@ public class Contact implements Comparable<Contact>, Serializable {
     @Column(name = "birthday")
     private String  birthday;
     @Column(name = "age")
-    private int age;
+    private String age;
 
+    public Contact(){}
     public Contact(
             @JsonProperty("id") long id,
             @JsonProperty("name") String name,
             @JsonProperty("surname") String surname,
             @JsonProperty("tel") String tel,
             @JsonProperty("email") String email,
-            @JsonProperty("birthday") String birthday) {
+            @JsonProperty("age") String age,
+            @JsonProperty("birthday") String birthday)
+            {
         this.id = id;
         Name = name;
         Surname = surname;
         Tel = tel;
         this.email = email;
+        this.birthday = birthday;
         if(!birthday.equals((""))){
             var currentDate = LocalDate.now();
             LocalDate date = LocalDate.parse(birthday);
-            this.birthday = date.getDayOfMonth()+" "+date.getMonth().getDisplayName(TextStyle.FULL, Locale.FRANCE);
-            this.age =Period.between(date, currentDate).getYears();
+            this.age =Integer.toString(Period.between(date, currentDate).getYears());
         }
-        else this.birthday = birthday;
+        else{ this.age = age;}
     }
 
     public long getId() {
@@ -98,6 +101,14 @@ public class Contact implements Comparable<Contact>, Serializable {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 
     @Override

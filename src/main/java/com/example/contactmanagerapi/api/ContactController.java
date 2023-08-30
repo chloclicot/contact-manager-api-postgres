@@ -2,6 +2,7 @@ package com.example.contactmanagerapi.api;
 
 import com.example.contactmanagerapi.model.Contact;
 import com.example.contactmanagerapi.service.ContactService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,13 @@ public class ContactController {
     }
 
     @DeleteMapping("delete/{id}")
+    @Transactional
     public ResponseEntity<?> deleteContact(@PathVariable("id") long id){
         contactService.deleteContact(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping("/update")
     public ResponseEntity<Contact> updateContact(@NonNull @RequestBody Contact contact){
         return new ResponseEntity<>(contactService.updateContact(contact), HttpStatus.OK);
     }
