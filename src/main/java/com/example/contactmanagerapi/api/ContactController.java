@@ -3,6 +3,8 @@ package com.example.contactmanagerapi.api;
 import com.example.contactmanagerapi.model.Contact;
 import com.example.contactmanagerapi.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,28 +26,29 @@ public class ContactController {
     }
 
     @PostMapping("/add") //va recevoir u ça via une requete post
-    public void addContact(@NonNull @RequestBody Contact contact){
-        contactService.addContact(contact);
+    public ResponseEntity<Contact> addContact(@NonNull @RequestBody Contact contact){
+        return new ResponseEntity<>(contactService.addContact(contact), HttpStatus.CREATED);
     }
 
     @GetMapping("/find/{id}")
-    public Contact getContactById(@PathVariable("id") UUID id){
-        return contactService.getContactById(id);
+    public ResponseEntity<Contact> getContactById(@PathVariable("id") long id){
+        return new ResponseEntity<>(contactService.getContactById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("delete/{id}")
-    public void deleteContact(@PathVariable("id") UUID id){
+    public ResponseEntity<?> deleteContact(@PathVariable("id") long id){
         contactService.deleteContact(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("update/{id}")
-    public void updateContact(@NonNull @RequestBody Contact contact, @PathVariable("id") UUID id){
-        contactService.updateContact(contact, id);
+    public ResponseEntity<Contact> updateContact(@NonNull @RequestBody Contact contact){
+        return new ResponseEntity<>(contactService.updateContact(contact), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<Contact> getAllContacts(){
-        return contactService.getAllContacts();
+    public ResponseEntity<List<Contact>> getAllContacts(){
+        return new ResponseEntity<>(contactService.getAllContacts(), HttpStatus.OK);
     }
 
 

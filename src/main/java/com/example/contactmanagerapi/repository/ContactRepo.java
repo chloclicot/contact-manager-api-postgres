@@ -1,16 +1,16 @@
 package com.example.contactmanagerapi.repository;
 
 import com.example.contactmanagerapi.model.Contact;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ContactRepo {
+public interface ContactRepo extends JpaRepository<Contact, Long> {
 
-    int addContact(Contact contact);
-    int updateContact(Contact contact,UUID id);
-    Optional<Contact> getContactById(UUID id);
-    int deleteContact(UUID id);
-    List<Contact> getAllContacts();
+
+    void deleteContactById(long id);
+
+    Optional<Contact> findContactById(long id);
 }

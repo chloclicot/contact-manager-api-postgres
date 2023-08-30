@@ -14,28 +14,28 @@ public class ContactService {
     private final ContactRepo contactRepo;
 
     @Autowired //
-    public ContactService(@Qualifier("fakeDB") ContactRepo contactRepo) {
+    public ContactService(ContactRepo contactRepo) {
         this.contactRepo = contactRepo;
     }
 
-    public int addContact(Contact contact){
-        return contactRepo.addContact(contact);
+    public Contact addContact(Contact contact){
+        return contactRepo.save(contact);
     }
 
-    public int updateContact(Contact contact, UUID id){
-        return contactRepo.updateContact(contact,id);
+    public Contact updateContact(Contact contact){
+        return contactRepo.save(contact);
     }
 
-    public Contact getContactById(UUID id){
-        return contactRepo.getContactById(id).orElse(null);
+    public Contact getContactById(long id){
+        return contactRepo.findContactById(id).orElse(null);
     }
 
-    public int deleteContact(UUID id){
-        return contactRepo.deleteContact(id);
+    public void deleteContact(long id){
+        contactRepo.deleteContactById(id);
     }
 
     public List<Contact> getAllContacts(){
-        return contactRepo.getAllContacts();
+        return contactRepo.findAll();
     }
 
 

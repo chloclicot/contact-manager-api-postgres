@@ -1,6 +1,7 @@
 package com.example.contactmanagerapi.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
@@ -9,18 +10,29 @@ import java.time.Period;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.UUID;
-
+@Entity
+@Table(name = "contacts")
 public class Contact implements Comparable<Contact>, Serializable {
-    private UUID id; //pour avoir un truc unique
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
+    private long id; //pour avoir un truc unique
     @NonNull
+    @Column(name = "name", nullable = false)
     private String Name;
+    @Column(name = "surname")
     private String Surname;
+    @Column(name = "tel")
     private String Tel;
+    @Column(name = "email")
     private String email;
+    @Column(name = "birthday")
     private String  birthday;
+    @Column(name = "age")
+    private int age;
 
     public Contact(
-            @JsonProperty("id") UUID id,
+            @JsonProperty("id") long id,
             @JsonProperty("name") String name,
             @JsonProperty("surname") String surname,
             @JsonProperty("tel") String tel,
@@ -34,17 +46,17 @@ public class Contact implements Comparable<Contact>, Serializable {
         if(!birthday.equals((""))){
             var currentDate = LocalDate.now();
             LocalDate date = LocalDate.parse(birthday);
-            this.birthday = date.getDayOfMonth()+" "+date.getMonth().getDisplayName(TextStyle.FULL, Locale.FRANCE)
-                    +" ("+ Period.between(date, currentDate).getYears()+") ans";
+            this.birthday = date.getDayOfMonth()+" "+date.getMonth().getDisplayName(TextStyle.FULL, Locale.FRANCE);
+            this.age =Period.between(date, currentDate).getYears();
         }
         else this.birthday = birthday;
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
